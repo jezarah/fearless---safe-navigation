@@ -10,7 +10,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { FaLocationArrow, FaTimes } from 'react-icons/fa'
+import { FaTimes } from 'react-icons/fa'
 
 import {
   useJsApiLoader,
@@ -29,12 +29,11 @@ function App() {
     libraries: ['places'],
   })
 
+  // eslint-disable-next-line no-unused-vars
   const [map, setMap] = useState(/** @type google.maps.Map */ (null))
   const [directionsResponse, setDirectionsResponse] = useState(null)
   const [routes, setRoutes] = useState([]);
   const [routeIndex, setRouteIndex] = useState(0);
-  const [distance, setDistance] = useState('')
-  const [duration, setDuration] = useState('')
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef()
@@ -60,16 +59,12 @@ function App() {
     })
     setDirectionsResponse(results)
     setRoutes(results.routes);
-    setDistance(results.routes[0].legs[0].distance.text)
-    setDuration(results.routes[0].legs[0].duration.text)
   }
 
   function clearRoute() {
     setDirectionsResponse(null)
     setRoutes([]);
     setRouteIndex(0);
-    setDistance('')
-    setDuration('')
     originRef.current.value = ''
     destinationRef.current.value = ''
   }
@@ -143,19 +138,6 @@ function App() {
               onClick={clearRoute}
             />
           </ButtonGroup>
-        </HStack>
-        <HStack spacing={4} mt={4} justifyContent='space-between'>
-          <Text>Distance: {distance} </Text>
-          <Text>Duration: {duration} </Text>
-          <IconButton
-            aria-label='center back'
-            icon={<FaLocationArrow />}
-            isRound
-            onClick={() => {
-              map.panTo(center)
-              map.setZoom(15)
-            }}
-          />
         </HStack>
         
       {/* Available Routes */}
