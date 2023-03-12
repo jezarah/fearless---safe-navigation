@@ -1,5 +1,10 @@
 # Fearless
 
+## Inspiration
+As women, safety is extremely important. While there are resources for women regarding safety we wanted to create a tool that women can use to turn their paranoia into preparedness. Ultimately it is our hope that anyone who uses the app feels **empowered**, **prepared** and **fearless**. 
+
+## What it does
+Fearless allows you to navigate from one location to another and uses news about crime to calculate "danger levels" for each route. This allows walkers to choose the safest route and equips them with tools to aid in safety as they take their journey.
 
 ## Starting the app
 
