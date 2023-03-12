@@ -225,7 +225,7 @@ function App() {
         // Functionality Button Group
       }
       <ButtonGroup spacing={5} padding={1.5}>
-        <Button colorScheme="pink" type="submit" onClick={calculateRoute}>
+        <Button colorScheme="purple" type="submit" onClick={calculateRoute}>
           Calculate Route
         </Button>
         <IconButton
