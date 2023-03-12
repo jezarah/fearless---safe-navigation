@@ -438,7 +438,7 @@ function App() {
                   height="auto"
                   justifyContent="flex-start"
                   textAlign="left"
-                  bgColor="white"
+                  bgColor="transparent"
                   _hover={{ bgColor: "gray.100" }}
                   onClick={() => handleButtonClick(index)}
                 >
