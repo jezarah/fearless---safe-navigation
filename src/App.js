@@ -18,7 +18,6 @@ import { BiTargetLock } from "react-icons/bi";
 import { AiOutlineHome } from "react-icons/ai";
 import { RxCounterClockwiseClock } from "react-icons/rx";
 import { MdFavoriteBorder } from "react-icons/md";
-
 import {
   useJsApiLoader,
   GoogleMap,
@@ -27,6 +26,7 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
+import LoadingComponent from "./components/LoadingComponent";
 
 const center = { lat: 49.266787003907815, lng: -123.24998278685538 };
 const Favorite = { lat: 49.264287311881496, lng: -123.16782315622977 };
@@ -54,7 +54,6 @@ function App() {
   if (!isLoaded) {
     return <SkeletonText />;
   }
-
   async function calculateRoute() {
     if (originRef.current.value === "" || destinationRef.current.value === "") {
       return;
@@ -228,6 +227,9 @@ function App() {
           onClick={clearRoute}
         />
       </ButtonGroup>
+
+      // For development purposes
+      {/*<LoadingComponent/>*/}
 
       {
         // <HStack spacing={4} mt={4} justifyContent="space-between">
