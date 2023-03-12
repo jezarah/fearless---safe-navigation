@@ -10,7 +10,7 @@ import {
   SkeletonText,
   Text,
   VStack,
-  Avatar,
+  Avatar, Alert, AlertIcon, Spacer,
 } from "@chakra-ui/react";
 import { FaLocationArrow, FaTimes } from "react-icons/fa";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -26,7 +26,6 @@ import {
   DirectionsRenderer,
 } from "@react-google-maps/api";
 import { useRef, useState } from "react";
-import LoadingComponent from "./components/LoadingComponent";
 
 const center = { lat: 49.266787003907815, lng: -123.24998278685538 };
 const Favorite = { lat: 49.264287311881496, lng: -123.16782315622977 };
@@ -45,6 +44,7 @@ function App() {
   const [routeIndex, setRouteIndex] = useState(0);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  const [now, setNow] = useState("");
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
@@ -71,6 +71,7 @@ function App() {
     setRoutes(results.routes);
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
+    getNow();
   }
 
   function clearRoute() {
@@ -86,6 +87,23 @@ function App() {
   const handleButtonClick = (index) => {
     setRouteIndex(index);
   };
+
+  function getNow() {
+    const today = new Date();
+    let time = today.getHours() + ":" + today.getMinutes();
+    if (today.getMinutes()<10) {
+       time = today.getHours() + ":0" + today.getMinutes();
+    }
+    setNow(time);
+  }
+  function calculateEnd(duration) {
+    const today = new Date();
+    let newDateObj = new Date(today.getTime() + duration*1000);
+    if (newDateObj.getMinutes()<10) {
+      return newDateObj.getHours() + ":0" + newDateObj.getMinutes();
+    }
+    return newDateObj.getHours() + ":" + newDateObj.getMinutes();
+  }
 
   return (
     <Flex
@@ -298,11 +316,28 @@ function App() {
                 onClick={() => handleButtonClick(index)}
               >
                 <VStack>
-                  <div>
-                    Route {index + 1}: {route.summary}
-                  </div>
-                  <div>Distance: {route.legs[0].distance.text}</div>
-                  <div>Duration: {route.legs[0].duration.text}</div>
+                  <Box pt={2}
+                       width='320px'
+                       height='130px'
+                       justifyContent='center'>
+                    <Flex>
+                      <div>{route.legs[0].duration.text}</div>
+                      <Spacer />
+                      <div>
+                        {now} - {calculateEnd(route.legs[0].duration.value)}
+                      </div>
+                    </Flex>
+                    <Text>
+                      Route {index + 1}: {route.summary}
+                    </Text>
+                    <Box pb={2}>
+                      <div>Distance: {route.legs[0].distance.text}</div>
+                    </Box>
+                    <Alert status='success' h='30px'>
+                      <AlertIcon />
+                      Very Safe
+                    </Alert>
+                  </Box>
                 </VStack>
               </Button>
             ))}
