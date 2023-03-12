@@ -20,7 +20,7 @@ import {
 } from '@react-google-maps/api'
 import { useRef, useState } from 'react'
 
-const center = { lat: 48.8584, lng: 2.2945 }
+const center = { lat: 49.251934, lng: -123.126666 }
 
 function App() {
   const { isLoaded } = useJsApiLoader({
@@ -36,23 +36,24 @@ function App() {
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef()
   /** @type React.MutableRefObject<HTMLInputElement> */
-  const destiantionRef = useRef()
+  const destinationRef = useRef()
 
   if (!isLoaded) {
     return <SkeletonText />
   }
 
   async function calculateRoute() {
-    if (originRef.current.value === '' || destiantionRef.current.value === '') {
+    if (originRef.current.value === '' || destinationRef.current.value === '') {
       return
     }
     // eslint-disable-next-line no-undef
     const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
       origin: originRef.current.value,
-      destination: destiantionRef.current.value,
+      destination: destinationRef.current.value,
       // eslint-disable-next-line no-undef
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: google.maps.TravelMode.WALKING,
+      provideRouteAlternatives: true,
     })
     setDirectionsResponse(results)
     setDistance(results.routes[0].legs[0].distance.text)
@@ -64,7 +65,7 @@ function App() {
     setDistance('')
     setDuration('')
     originRef.current.value = ''
-    destiantionRef.current.value = ''
+    destinationRef.current.value = ''
   }
 
   return (
@@ -79,7 +80,7 @@ function App() {
         {/* Google Map Box */}
         <GoogleMap
           center={center}
-          zoom={15}
+          zoom={13}
           mapContainerStyle={{ width: '100%', height: '100%' }}
           options={{
             zoomControl: false,
@@ -115,7 +116,7 @@ function App() {
               <Input
                 type='text'
                 placeholder='Destination'
-                ref={destiantionRef}
+                ref={destinationRef}
               />
             </Autocomplete>
           </Box>
