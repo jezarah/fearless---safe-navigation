@@ -45,11 +45,29 @@ function App() {
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
   const [now, setNow] = useState("");
+  const [dangerLevel, setDangerLevel] = useState([]);
 
   /** @type React.MutableRefObject<HTMLInputElement> */
   const originRef = useRef();
   /** @type React.MutableRefObject<HTMLInputElement> */
   const destinationRef = useRef();
+
+  function getDangerLevel(summary) {
+    // this data was generated from the co:here api using news webscraper api
+    const querySet = {
+      "E Hastings St": 0.7842135419999999,
+      "W Cordova St and E Hastings St": 0.825620032,
+      "Powell St": 0.3738672,
+      "NW Marine Dr": 0.3650033853333333,
+    };
+    if (querySet[summary] >= 0.75) {
+      return "Danger"
+    } else if (querySet[summary] >= 0.4) {
+      return "Caution"
+    } else {
+      return "Safe Route"
+    }
+  }
 
   if (!isLoaded) {
     return <SkeletonText />;
@@ -72,6 +90,10 @@ function App() {
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
     getNow();
+    setDangerLevel(routes.map((route) => {
+      getDangerLevel(route.summary);
+      console.log(`route summary: ${route.summary}, danger level: ${dangerLevel}`);
+    }));
   }
 
   function clearRoute() {
@@ -335,9 +357,15 @@ function App() {
                     </Box>
                     <Alert status='success' h='30px'>
                       <AlertIcon />
-                      Very Safe
+                      <div>Danger Level: {getDangerLevel(route.summary)}</div>
                     </Alert>
                   </Box>
+                  <div>
+                    Route {index + 1}: {route.summary}
+                  </div>
+                  {/* <div>Distance: {route.legs[0].distance.text}</div> */}
+                  {/* <div>Duration: {route.legs[0].duration.text}</div> */}
+                  
                 </VStack>
               </Button>
             ))}
